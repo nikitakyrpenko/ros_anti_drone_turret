@@ -1,0 +1,5 @@
+CompileFlags:
+  # colcon writes the merged database to robot_ws/build/compile_commands.json.
+  # This tells clangd to use it for every file in the workspace (incl. src/),
+  # so ros2-generated headers (antidrone_turret/msg/*.hpp, srv/*.hpp) resolve.
+  CompilationDatabase: build

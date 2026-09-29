@@ -1,0 +1,47 @@
+{
+  // VS Code tasks run from the workspace root inside the devcontainer terminal.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // colcon build для ROS 2 workspace antidrone_turret. Source base ROS перед build,
+      // бо task shell non-interactive і .bashrc source не спрацьовує.
+      "label": "ROS2: colcon build (antidrone_turret)",
+      "type": "shell",
+      "command": "source /opt/ros/jazzy/setup.bash && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Debug",
+      "options": {
+        "cwd": "${workspaceFolder}/robot_ws"
+      },
+      "group": "build",
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    },
+    {
+      // Default build task (Ctrl+Shift+B): build antidrone_turret workspace, тоді
+      // source overlay і запуск повної системи через launch file.
+      "label": "ROS2: build + launch system (antidrone_turret)",
+      "type": "shell",
+      "command": "source /opt/ros/jazzy/setup.bash && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Debug && source install/setup.bash && ros2 launch antidrone_turret system.launch.py",
+      "options": {
+        "cwd": "${workspaceFolder}/robot_ws"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    }
+  ]
+}

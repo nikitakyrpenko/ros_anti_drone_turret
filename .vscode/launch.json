@@ -1,0 +1,50 @@
+{
+  // Launch configurations run inside the devcontainer and use the image's GDB.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ROS2 antidrone_turret: actuator_node (gdb)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/robot_ws/install/antidrone_turret/lib/antidrone_turret/actuator_node",
+      "preLaunchTask": "ROS2: colcon build (antidrone_turret)",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/robot_ws",
+      "environment": [
+        { "name": "AMENT_PREFIX_PATH", "value": "${workspaceFolder}/robot_ws/install/antidrone_turret:/opt/ros/jazzy" },
+        { "name": "LD_LIBRARY_PATH", "value": "${workspaceFolder}/robot_ws/install/antidrone_turret/lib:/opt/ros/jazzy/lib:/opt/ros/jazzy/lib/x86_64-linux-gnu" },
+        { "name": "RMW_IMPLEMENTATION", "value": "rmw_cyclonedds_cpp" },
+        { "name": "ROS_DOMAIN_ID", "value": "0" }
+      ],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "setupCommands": [
+        { "description": "Enable pretty-printing for gdb", "text": "-enable-pretty-printing", "ignoreFailures": true }
+      ]
+    },
+    {
+      "name": "ROS2 antidrone_turret: target_track_publisher_node (gdb)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/robot_ws/install/antidrone_turret/lib/antidrone_turret/target_track_publisher_node",
+      "preLaunchTask": "ROS2: colcon build (antidrone_turret)",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/robot_ws",
+      "environment": [
+        { "name": "AMENT_PREFIX_PATH", "value": "${workspaceFolder}/robot_ws/install/antidrone_turret:/opt/ros/jazzy" },
+        { "name": "LD_LIBRARY_PATH", "value": "${workspaceFolder}/robot_ws/install/antidrone_turret/lib:/opt/ros/jazzy/lib:/opt/ros/jazzy/lib/x86_64-linux-gnu" },
+        { "name": "RMW_IMPLEMENTATION", "value": "rmw_cyclonedds_cpp" },
+        { "name": "ROS_DOMAIN_ID", "value": "0" }
+      ],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "setupCommands": [
+        { "description": "Enable pretty-printing for gdb", "text": "-enable-pretty-printing", "ignoreFailures": true }
+      ]
+    }
+  ]
+}

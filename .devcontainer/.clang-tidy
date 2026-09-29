@@ -1,0 +1,27 @@
+# clang-tidy використовується як static analysis шар для C++ коду.
+# Набір перевірок навмисно широкий, але не всі warning-и є помилками:
+# частину сигналу студенти мають навчитися читати поступово.
+Checks: >
+  -*,
+  bugprone-*,
+  clang-analyzer-*,
+  cppcoreguidelines-*,
+  modernize-*,
+  performance-*,
+  readability-*,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -modernize-use-trailing-return-type,
+  -readability-avoid-const-params-in-decls,
+  -readability-function-cognitive-complexity,
+  -readability-identifier-naming,
+  -readability-magic-numbers,
+  misc-unused-using-decls,
+
+# Аналізувати лише код домашніх робіт і типові source/include директорії,
+# а не системні headers або сторонні бібліотеки.
+HeaderFilterRegex: '(^|/)(homework_[0-9]+|include|src)/'
+
+# Зауваження static analyzer мають ламати перевірку: це найчастіше реальні баги.
+# Решта checks лишаються warning-ами, щоб clang-tidy був навчальним
+# інструментом, а не стіною стилістичних помилок для ДЗ.
+WarningsAsErrors: clang-analyzer-*,

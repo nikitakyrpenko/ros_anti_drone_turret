@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CycloneDDS xmlns="https://cdds.io/config">
+  <Domain id="any">
+    <General>
+      <!--
+        Devcontainer працює у host network. Автовибір interface лишає DDS
+        сумісним з Docker/WSL/VPN setup.
+      -->
+      <AllowMulticast>true</AllowMulticast>
+      <EnableMulticastLoopback>true</EnableMulticastLoopback>
+      <Interfaces>
+        <NetworkInterface autodetermine="true"/>
+      </Interfaces>
+    </General>
+
+    <Discovery>
+      <!--
+        auto + MaxAutoParticipantIndex дають кільком локальним ROS 2 процесам
+        стабільно отримувати різні participant index-и.
+      -->
+      <ParticipantIndex>auto</ParticipantIndex>
+      <MaxAutoParticipantIndex>120</MaxAutoParticipantIndex>
+
+      <!-- Локальний peer лишає graph видимим для процесів у цьому devcontainer. -->
+      <Peers>
+        <Peer Address="127.0.0.1"/>
+      </Peers>
+    </Discovery>
+  </Domain>
+</CycloneDDS>

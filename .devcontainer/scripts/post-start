@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# VS Code викликає цей script після старту container-а. ROS 2 CLI daemon
+# має відповідати поточному DDS profile. Якщо лишився завислий daemon, звичайні
+# `ros2 node list` / `ros2 topic list` можуть зависати на XML-RPC connect.
+source /opt/ros/jazzy/setup.bash
+
+if [[ "${RMW_IMPLEMENTATION:-}" != "rmw_cyclonedds_cpp" ]]; then
+  echo "RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION:-unset}, expected rmw_cyclonedds_cpp" >&2
+  exit 1
+fi
+
+if [[ "${CYCLONEDDS_URI:-}" != "file:///etc/cyclonedds.xml" ]]; then
+  echo "CYCLONEDDS_URI=${CYCLONEDDS_URI:-unset}, expected file:///etc/cyclonedds.xml" >&2
+  exit 1
+fi
+
+if command -v timeout >/dev/null 2>&1; then
+  timeout 3s ros2 daemon stop >/dev/null 2>&1 || true
+else
+  ros2 daemon stop >/dev/null 2>&1 || true
+fi
+
+if command -v pgrep >/dev/null 2>&1; then
+  while IFS= read -r ros_daemon_pid; do
+    kill "${ros_daemon_pid}" >/dev/null 2>&1 || true
+  done < <(pgrep -f 'ros2cli.daemon.daemonize|--name ros2-daemon|_ros2_daemon' || true)
+fi
+
+if command -v timeout >/dev/null 2>&1; then
+  timeout 5s ros2 daemon start >/dev/null
+  timeout 5s ros2 daemon status >/dev/null
+else
+  ros2 daemon start >/dev/null
+  ros2 daemon status >/dev/null
+fi
